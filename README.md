@@ -1,5 +1,3 @@
-# 4061-Project-1
-
 ## PA Group 98
 
 Ryan Bergstein - bergs643
