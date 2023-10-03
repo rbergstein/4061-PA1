@@ -1,5 +1,4 @@
 #include "utils.h"
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -7,39 +6,42 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
+#include <math.h>
 
 // Create N files and distribute the data from the input file evenly among them
 // See section 3.1 of the project writeup for important implementation details
 void partition_file_data(char *input_file, int n, char *blocks_folder) {
     // Hint: Use fseek() and ftell() to determine the size of the file
-    FILE *file = fopen(input_file, "r"); // open the input file
-    if (file == NULL) {
+    FILE *Ifile = fopen(input_file, "r"); // open the input file
+    if (Ifile == NULL) {
         perror("Cannot open file\n");
         exit(-1);
     }
 
-    fseek(file, 0, SEEK_END); // set the pointer to the end of the file
+    fseek(Ifile, 0, SEEK_END); // set the pointer to the end of the file
 
-    int file_length = ftell(file); // look at our pointer to see how big the file is
-    int size_nminus1 = floor(file_length / n);  // size of 0 to n - 1 files in bytes
-    int size_lastfile = floor(file_length / n) + (file_length % n); // nth file size in bytes
+    int Ifile_length = ftell(Ifile); // look at our pointer to see how big the file is
+    int size_nminus1 = floor(Ifile_length / n);  // size of 0 to n - 1 files in bytes
+    int size_lastfile = size_nminus1 + (Ifile_length % n); // nth file size in bytes
+
+    rewind(Ifile); // set back to start
+    char path[50];
+
+    mkdir("home/4061-Project-1/output/blocks", O_RDWR | O_APPEND | O_CREAT);
 
     for (int i = 0; i < (n - 1); i++) {   //covers 0 to n - 2 files
-        char path[50];
-        sprintf(path, "output/blocks/%s.txt", i); // unique path of file
+        sprintf(path, "%s/%d.txt", "output/blocks", i); // unique path of file
 
-        int file = open(path, O_RDWR | O_APPEND | O_CREAT); // creates the file in correct directory
+        int nminus1_files = open(path, O_RDWR | O_APPEND | O_CREAT); // creates the file in correct directory
 
-
+        fwrite(nminus1_files, size_nminus1, 1, Ifile); // wrong
     }
     // need one more to cover n - 1 file
-    char path[50];
-    sprintf(path, "output/blocks/%s.txt", (n - 1));
+    sprintf(path, "%s/%d.txt", "output/blocks", (n - 1));
 
-    int lastfile = open(path, O_RDWR | O_APPEND | O_CREAT); // last file in the directory
+    int last_file = open(path, O_RDWR | O_APPEND | O_CREAT); // last file in the directory
 
-
-
+    fwrite(Ifile, size_lastfile, 1, last_file); // wrong
 
 
 
@@ -48,7 +50,9 @@ void partition_file_data(char *input_file, int n, char *blocks_folder) {
 
 
 
-    fclose(file);
+
+
+    fclose(Ifile);
 }
 
 
