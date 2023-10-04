@@ -16,10 +16,10 @@ inter: CFLAGS += -D TEST_INTERMEDIATE
 inter: merkle
 
 merkle: $(SRCDIR)/merkle.c $(LIBDIR)/utils.o $(LIBDIR)/print_tree.o
-	$(CC) $(CFLAGS) -I$(INCDIR) $(SRCDIR)/merkle.c $(LIBDIR)/utils.o $(LIBDIR)/print_tree.o -o merkle
+	$(CC) $(CFLAGS) -I$(INCDIR) $(SRCDIR)/merkle.c $(LIBDIR)/utils.o $(LIBDIR)/print_tree.o -o merkle -lm
 
 child_process: $(SRCDIR)/child_process.c $(LOBJS) 
-	$(CC) $(CFLAGS) -I$(INCDIR) $(SRCDIR)/child_process.c $(LOBJS) -o child_process
+	$(CC) $(CFLAGS) -I$(INCDIR) $(SRCDIR)/child_process.c $(LOBJS) -o child_process 
 
 ${LIBDIR}/utils.o: $(SRCDIR)/utils.c $(INCDIR)/utils.h
 	$(CC) $(CFLAGS) -I$(INCDIR) -c $(SRCDIR)/utils.c -o $(LIBDIR)/utils.o
