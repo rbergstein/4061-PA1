@@ -41,6 +41,8 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
 
+    fclose(fp);
+
 
     // ##### DO NOT REMOVE #####
     setup_output_directory(blocks_folder, hashes_folder);

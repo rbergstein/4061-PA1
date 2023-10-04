@@ -8,11 +8,16 @@ void partition_file_data(char *input_file, int n, char *blocks_folder) {
     char file_name[PATH_MAX];
 
     FILE *orig_file = fopen(input_file, "r");
+    // do error check
+    if (orig_file == NULL) {
+        perror("Error opening the file");
+        exit(-1);
+    }
+
 
     //determine size of file
     fseek(orig_file, 0, SEEK_END);
     long file_size = ftell(orig_file);
-    char buffer[file_size];
 
     //determine how many bytes to read/write
     int block_size = floor(file_size / n);
@@ -21,22 +26,25 @@ void partition_file_data(char *input_file, int n, char *blocks_folder) {
     fseek(orig_file, 0, SEEK_SET);
     for (int i=0; i < n-1; i++) {
         sprintf(file_name, "%s/%d.txt", blocks_folder, i);
-        FILE *new_file = fopen(file_name, "w");
-    
-        fread(buffer, block_size, 1, orig_file);
-        fwrite(buffer, block_size, 1, new_file);
+        FILE *new_file = fopen(file_name, "w+");
 
-        fseek(orig_file, (block_size * (i + 1)), SEEK_SET);
+        // block_size should be 
+        char buffer[block_size];
+        fread(buffer, 1, block_size, orig_file);
+        fwrite(buffer, 1, block_size, new_file);
+
+        // fseek(orig_file, (block_size * (i + 1)), SEEK_SET);
 
         fclose(new_file);
     }
     
     //read and write to last file
+    char buffer[last_block_size];
     sprintf(file_name, "%s/%d.txt", blocks_folder, n-1);
-    FILE *new_file = fopen(file_name, "w");
+    FILE *new_file = fopen(file_name, "w+");
     
-    fread(buffer, last_block_size, 1, orig_file);
-    fwrite(buffer, last_block_size, 1, new_file);
+    fread(buffer, 1, last_block_size, orig_file);
+    fwrite(buffer, 1, last_block_size, new_file);
     fclose(new_file);
 
 
