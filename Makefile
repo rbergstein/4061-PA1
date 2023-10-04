@@ -13,7 +13,7 @@ all: merkle child_process
 
 # Make target to build for testing intermediate submission
 inter: CFLAGS += -D TEST_INTERMEDIATE
-inter: merkle
+inter: merkle 
 
 merkle: $(SRCDIR)/merkle.c $(LIBDIR)/utils.o $(LIBDIR)/print_tree.o
 	$(CC) $(CFLAGS) -I$(INCDIR) $(SRCDIR)/merkle.c $(LIBDIR)/utils.o $(LIBDIR)/print_tree.o -o merkle -lm
