@@ -12,11 +12,15 @@
 // See section 3.1 of the project writeup for important implementation details
 void partition_file_data(char *input_file, int n, char *blocks_folder) {
     // Hint: Use fseek() and ftell() to determine the size of the file
+
+    // VALIDATE INPUT (make sure file is real and n is a power of 2)
     FILE *Ifile = fopen(input_file, "r"); // open the input file
     if (Ifile == NULL) {
         perror("Cannot open file\n");
         exit(-1);
     }
+
+    //check n power of 2
 
     fseek(Ifile, 0, SEEK_END); // set the pointer to the end of the file
 
@@ -27,30 +31,28 @@ void partition_file_data(char *input_file, int n, char *blocks_folder) {
     rewind(Ifile); // set back to start
     char path[50];
 
-    mkdir("home/4061-Project-1/output/blocks", O_RDWR | O_APPEND | O_CREAT);
+    // mkdir("home/4061-Project-1/output/blocks", O_RDWR | O_APPEND | O_CREAT);
 
     for (int i = 0; i < (n - 1); i++) {   //covers 0 to n - 2 files
-        sprintf(path, "%s/%d.txt", "output/blocks", i); // unique path of file
+        sprintf(path, "%s/%d.txt", blocks_folder, i); // unique path of file
 
-        int nminus1_files = open(path, O_RDWR | O_APPEND | O_CREAT); // creates the file in correct directory
+        FILE *nminus1_files = fopen(path, "wb"); // creates the file in correct directory
 
-        fwrite(nminus1_files, size_nminus1, 1, Ifile); // wrong
+        char buf[size_nminus1];
+        fread(buf, 1, size_nminus1, Ifile);
+        fwrite(buf, 1, size_nminus1, nminus1_files);
+
+        fclose(nminus1_files);
     }
     // need one more to cover n - 1 file
-    sprintf(path, "%s/%d.txt", "output/blocks", (n - 1));
+    sprintf(path, "%s/%d.txt", blocks_folder, (n - 1));
 
-    int last_file = open(path, O_RDWR | O_APPEND | O_CREAT); // last file in the directory
+    FILE *last_file = fopen(path, "wb"); // last file in the directory
 
-    fwrite(Ifile, size_lastfile, 1, last_file); // wrong
+    char buf[size_lastfile];
 
-
-
-
-
-
-
-
-
+    fread(buf, 1, size_lastfile, Ifile);
+    fwrite(buf, 1, size_lastfile, last_file);
 
     fclose(Ifile);
 }
