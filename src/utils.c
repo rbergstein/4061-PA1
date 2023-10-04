@@ -26,7 +26,7 @@ void partition_file_data(char *input_file, int n, char *blocks_folder) {
         fread(buffer, block_size, 1, orig_file);
         fwrite(buffer, block_size, 1, new_file);
 
-        fseek(orig_file, (block_size * (i + 1), SEEK_SET);
+        fseek(orig_file, (block_size * (i + 1)), SEEK_SET);
 
         fclose(new_file);
     }
