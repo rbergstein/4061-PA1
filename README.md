@@ -6,7 +6,7 @@ Ryan Bergstein - bergs643
 
 Marwa Osman - osman320
 
-Basma Elaraby - 
+Basma Elaraby - elara006
 
 ## CSE computer used
 
@@ -22,8 +22,9 @@ Ryan: Created a group github repository to collectively work out of and set up t
 
 Marwa: Polished off the logic for 'utils.c' and created the logic checks needed in 'merkle.c'.
 
-Basma: 
+Basma: Did the final debugging for the 'utils.c' file, and wrote the plan for Markle Tree.
 
 ## Plan for Merkle Tree:
 
-(FILLER)
+We are going to work on the Markle Tree root comutaion together. In child_process.c, we will split up the 
+TODO sections. We will all debug together and attend office hours when help is needed.
