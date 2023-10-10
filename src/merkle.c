@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
     partition_file_data(input_file, n, blocks_folder);
 
     // TODO: Start the recursive merkle tree computation by spawning first child process (root)
-    char *arr[] = {"output/hashes/", "output/hashes/", argv[2], "0", NULL}; // create array to be passed to exec, ends with NULL
+    char *arr[] = {blocks_folder, hashes_folder, argv[2], "0", NULL}; // create array to be passed to exec, ends with NULL
     execv("./child_process", arr); // creates the first child process with ID 0
 
     // ##### DO NOT REMOVE #####
