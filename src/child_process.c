@@ -21,10 +21,9 @@ int main(int argc, char* argv[]) {
     char hash_buffer[SHA256_BLOCK_SIZE * 2 + 1];
     // TODO: If the current process is a leaf process, read in the associated block file 
     // and compute the hash of the block.
-    if (currentID >= (N - 1) && currentID <= ((2 * N) - 2)) { // loop through leaves
+    if (currentID >= (N - 2)) { // loop through leaves
         
-        sprintf(target_name, "%s/%d.out", argv[1], currentID - 1);
-        // printf("%s\n", target_name);
+        sprintf(target_name, "%s/%d.out", argv[2], currentID);
 
         FILE *target_block = fopen(target_name, "w+");
 
@@ -45,22 +44,24 @@ int main(int argc, char* argv[]) {
         int childpid1 = fork();
 
         if (childpid1 == 0) { // child 
-            char childID1[20];
-            sprintf(childID1, "%d", (2 * (atoi(argv[3])) + 1)); // child 1 ID (maybe?)
+            int childID1 = currentID;
+            char childID1_str[20];
+            sprintf(childID1_str, "%d", childID1);
 
             // char *array[] = {blocks folder, hashes folder, N, ID, NULL}
-            char *child_arr1[] = {"./child_process", argv[1], argv[2], argv[3], childID1, NULL};
+            char *child_arr1[] = {"./child_process", argv[1], argv[2], argv[3], childID1_str, NULL};
             execv("./child_process", child_arr1);
             
         } else{ // parent
             int childpid2 = fork();
-
             if (childpid2 == 0) {
-                char childID2[20];
-                sprintf(childID2, "%d", (2 * (atoi(argv[3])) + 2)); // child 2 ID (maybe?)
+               
+                int childID2 = currentID + 1;
+                char childID2_str[20];
+                sprintf(childID2_str, "%d", childID2);
 
                 // char *array[] = {blocks folder, hashes folder, N, ID, NULL}
-                char *child_arr2[] = {"./child_process", argv[1], argv[2], argv[3], childID2, NULL};
+                char *child_arr2[] = {"./child_process", argv[1], argv[2], argv[3], childID2_str, NULL};
                 execv("./child_process", child_arr2);
             } else { // TODO: Wait for the two child processes to finish
 
@@ -84,9 +85,9 @@ int main(int argc, char* argv[]) {
     char right_buf[PATH_MAX];
     char result_buf[PATH_MAX];
 
-    sprintf(left_buf, "%s/%d.out", argv[1], 2 * (atoi(argv[3])) + 1);
-    sprintf(right_buf, "%s/%d.out", argv[1], 2 * (atoi(argv[3])) + 2);
-    sprintf(result_buf, "%s/%d.out", argv[1], atoi(argv[3]));
+    sprintf(left_buf, "%s/%d.out", argv[2], currentID);
+    sprintf(right_buf, "%s/%d.out", argv[2], currentID + 1);
+    sprintf(result_buf, "%s/%d.out", argv[2], N);
     
     FILE *fp1 = fopen(left_buf, "w+");
     FILE *fp2 = fopen(right_buf, "w+");
