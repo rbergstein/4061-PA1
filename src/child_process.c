@@ -19,28 +19,28 @@ int main(int argc, char* argv[]) {
 
     char target_name[PATH_MAX];
     char hash_buffer[SHA256_BLOCK_SIZE * 2 + 1];
+
+    int fileID = currentID + (N - 1);
     // TODO: If the current process is a leaf process, read in the associated block file 
     // and compute the hash of the block.
-    if (currentID >= (N - 2)) { // loop through leaves
-        
-        sprintf(target_name, "%s/%d.out", argv[2], currentID);
+    
+    sprintf(target_name, "%s/%d.out", argv[2], fileID);
 
-        FILE *target_block = fopen(target_name, "w+");
+    FILE *target_block = fopen(target_name, "w+");
 
-        if (target_block == NULL) {
-            printf("Cannot open file in child_process\n");
-            exit(-1);
-        }
-
-        hash_data_block(hash_buffer, target_name); //  from hash.h
-
-        fwrite(hash_buffer, 1, sizeof(hash_buffer), target_block);
-
-        fclose(target_block);
+    if (target_block == NULL) {
+        printf("Cannot open file in child_process\n");
+        exit(-1);
     }
+
+    hash_data_block(hash_buffer, target_name); //  from hash.h
+
+    fwrite(hash_buffer, 1, sizeof(hash_buffer), target_block);
+
+    fclose(target_block);
     // TODO: If the current process is not a leaf process, spawn two child processes using  
     // exec() and ./child_process. 
-    else {
+    if (currentID < (N - 2)) {
         int childpid1 = fork();
 
         if (childpid1 == 0) { // child 
@@ -85,8 +85,8 @@ int main(int argc, char* argv[]) {
     char right_buf[PATH_MAX];
     char result_buf[PATH_MAX];
 
-    sprintf(left_buf, "%s/%d.out", argv[2], currentID);
-    sprintf(right_buf, "%s/%d.out", argv[2], currentID + 1);
+    sprintf(left_buf, "%s/%d.out", argv[2], fileID);
+    sprintf(right_buf, "%s/%d.out", argv[2], fileID + 1);
     sprintf(result_buf, "%s/%d.out", argv[2], N);
     
     FILE *fp1 = fopen(left_buf, "w+");
