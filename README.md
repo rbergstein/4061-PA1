@@ -20,9 +20,9 @@ Added an "-lm" to link with the math library correctly.
 
 Ryan: Created a group github repository to collectively work out of and set up the project files and README document. Started work on the logic for 'utils.c'. Wrote the code to create the initial child process for our merkle tree in merkle.c. Also wrote the logic for the leaf nodes in child_process.c and debugged most of the issues with the trees creation and creaetion of the .out files.
 
-Marwa: Polished off the logic for 'utils.c' and created the logic checks needed in 'merkle.c'.
+Marwa: Polished off the logic for 'utils.c' and created the logic checks needed in 'merkle.c'. Wrote the logic to retrieve the two hashes from the two child processeses and output the computed hashes. Did final debugging for child_process.c
 
-Basma: Did the final debugging for the 'utils.c' file, and wrote the plan for Markle Tree.
+Basma: Did the final debugging for the 'utils.c' file, and wrote the plan for Markle Tree. Did final debugging for child_process.c. 
 
 ## Design of Merkle Tree:
 
