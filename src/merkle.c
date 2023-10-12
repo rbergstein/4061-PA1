@@ -21,17 +21,9 @@ int main(int argc, char* argv[]) {
     char *input_file = argv[1];
     int n = atoi(argv[2]);
 
-    bool n_valid = false;
-    for (int i = 1; i <= 7; i++) {
-        if (pow(2, i) == n) {
-            n_valid = true;
-        }
-    }
-
-    //check if n is a power of 2
-    if(n_valid == false){
-        printf("N is not a power of 2\n");
-        exit(-1);
+    if((n &(n-1)) != 0)
+    {
+        return 1;
     }
 
     //check if file can be opened
@@ -55,7 +47,9 @@ int main(int argc, char* argv[]) {
     pid = fork();
     if (pid == 0) {
         char *arr[] = {"./child_process", blocks_folder, hashes_folder, argv[2], "0", NULL}; // create array to be passed to exec, ends with NULL
-        execv("./child_process", arr); // creates the first child process with ID 0
+        execvp("./child_process", arr); // creates the first child process with ID 0
+        
+    }else{
         wait(NULL);
     }
 
